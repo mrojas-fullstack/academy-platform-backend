@@ -1,27 +1,32 @@
 from __future__ import annotations
 
 from collections.abc import AsyncGenerator
+from typing import Annotated
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import SQLAlchemyUnitOfWork, get_session
 from app.modules.auth.application.commands import (
     GoogleLoginCommand,
+    LogoutCommand,
     RefreshTokenCommand,
     RegisterUserCommand,
 )
 from app.modules.auth.application.handlers.command import (
     GoogleLoginHandler,
+    LogoutHandler,
     RefreshTokenHandler,
     RegisterUserHandler,
 )
+from app.modules.auth.domain.entities import Session
 from app.modules.auth.infrastructure.database.repositories import (
     SQLAlchemyUserRepository,
 )
 from app.modules.auth.presentation.dependencies import (
     AuthDependencies,
     get_auth_dependencies,
+    get_current_session,
 )
 from app.modules.auth.presentation.requests.google_login_request import (
     GoogleLoginRequest,
@@ -49,7 +54,7 @@ router = APIRouter(
 
 
 async def get_register_user_handler(
-    session: AsyncSession = Depends(get_session),
+    session: Annotated[AsyncSession, Depends(get_session)],
 ) -> AsyncGenerator[RegisterUserHandler]:
     repository = SQLAlchemyUserRepository(
         session=session,
@@ -72,9 +77,11 @@ async def get_register_user_handler(
 )
 async def register(
     body: RegisterRequest,
-    handler: RegisterUserHandler = Depends(get_register_user_handler),
+    handler: Annotated[
+        RegisterUserHandler,
+        Depends(get_register_user_handler),
+    ],
 ) -> RegisterResponse:
-
     user_id = await handler.handle(
         RegisterUserCommand(
             email=body.email,
@@ -99,7 +106,10 @@ async def register(
 )
 async def google_login(
     body: GoogleLoginRequest,
-    dependencies: AuthDependencies = Depends(get_auth_dependencies),
+    dependencies: Annotated[
+        AuthDependencies,
+        Depends(get_auth_dependencies),
+    ],
 ) -> GoogleLoginResponse:
     handler = GoogleLoginHandler(
         user_repository=dependencies.user_repository,
@@ -132,7 +142,10 @@ async def google_login(
 )
 async def refresh_token(
     body: RefreshTokenRequest,
-    dependencies: AuthDependencies = Depends(get_auth_dependencies),
+    dependencies: Annotated[
+        AuthDependencies,
+        Depends(get_auth_dependencies),
+    ],
 ) -> RefreshTokenResponse:
     handler = RefreshTokenHandler(
         refresh_token_repository=dependencies.refresh_token_repository,
@@ -151,3 +164,32 @@ async def refresh_token(
         access_token=tokens["access_token"],
         refresh_token=tokens["refresh_token"],
     )
+
+
+@router.post(
+    "/logout",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def logout(
+    current_session: Annotated[
+        Session,
+        Depends(get_current_session),
+    ],
+    dependencies: Annotated[
+        AuthDependencies,
+        Depends(get_auth_dependencies),
+    ],
+) -> Response:
+    handler = LogoutHandler(
+        session_repository=dependencies.session_repository,
+        refresh_token_repository=dependencies.refresh_token_repository,
+        unit_of_work=dependencies.unit_of_work,
+    )
+
+    await handler.handle(
+        LogoutCommand(
+            session_id=str(current_session.id.value),
+        )
+    )
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
