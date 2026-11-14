@@ -1,17 +1,9 @@
-from typing import Generic, TypeVar
-
+from .handler import Handler
 from .query import Query
-from .handler import Handler, TResult
-
-TQuery = TypeVar(
-    "TQuery",
-    bound=Query,
-)
 
 
-class QueryHandler(
+class QueryHandler[TQuery: Query, TResult](
     Handler[TQuery, TResult],
-    Generic[TQuery, TResult],
 ):
     """
     Base class for query handlers.

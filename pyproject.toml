@@ -11,16 +11,22 @@ dependencies = [
     "httpx>=0.28.1",
     "passlib[bcrypt]>=1.7.4",
     "psycopg[binary]>=3.3.4",
+    "greenlet>=3.2.4",
     "pydantic-settings>=2.14.2",
     "python-dotenv>=1.2.2",
     "python-jose[cryptography]>=3.5.0",
     "sqlalchemy>=2.0.51",
     "uvicorn>=0.51.0",
+    "email-validator>=2.3.0",
+    "google-auth>=2.57.1",
+    "pyjwt>=2.13.0",
+    "requests>=2.34.2",
 ]
 
 [dependency-groups]
 dev = [
     "mypy>=2.3.0",
+    "pre-commit>=4.3.0",
     "pytest>=9.1.1",
     "pytest-asyncio>=1.4.0",
     "ruff>=0.15.22",
@@ -62,6 +68,14 @@ line-length = 100
 
 target-version = "py313"
 
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    "alembic/versions",
+]
 
 [tool.ruff.lint]
 
@@ -69,10 +83,23 @@ select = [
     "E",
     "F",
     "I",
-    "B",
-    "UP"
+    "UP",
+    "B"
 ]
 
+[tool.ruff.lint.per-file-ignores]
+
+"app/modules/*/presentation/routes/*.py" = [
+    "B008",
+]
+
+[tool.ruff.format]
+
+quote-style = "double"
+
+indent-style = "space"
+
+line-ending = "auto"
 
 [tool.mypy]
 
@@ -83,3 +110,9 @@ plugins = [
 ]
 
 strict = true
+
+warn_unused_configs = true
+
+pretty = true
+
+show_error_codes = true

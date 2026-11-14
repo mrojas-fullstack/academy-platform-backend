@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Login - BentoGallery Test</title>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 520px;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            font-size: 22px;
+            margin-top: 0;
+        }
+
+        p {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .google-button {
+            margin: 24px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            resize: vertical;
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        button {
+            margin-top: 12px;
+            padding: 11px 18px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <h1>BentoGallery - Google Login Test</h1>
+
+        <p>
+            Esta página obtiene un Google ID Token para probar
+            el endpoint POST /auth/google de nuestro backend.
+        </p>
+
+        <div
+            id="g_id_onload"
+            data-client_id="168815425653-p0fd834gh8ebopj3b3jl3ujh64bak9l7.apps.googleusercontent.com"
+            data-callback="handleGoogleCredential"
+            data-auto_prompt="false">
+        </div>
+
+        <div class="google-button">
+            <div
+                class="g_id_signin"
+                data-type="standard"
+                data-size="large"
+                data-theme="outline"
+                data-text="signin_with"
+                data-shape="rectangular"
+                data-logo_alignment="left">
+            </div>
+        </div>
+
+        <p>Google ID Token:</p>
+
+        <textarea
+            id="credential"
+            readonly
+            placeholder="Aquí aparecerá el Google ID Token...">
+        </textarea>
+
+        <button id="copyButton" onclick="copyCredential()" disabled>
+            Copiar ID Token
+        </button>
+
+        <div id="status" class="status"></div>
+    </main>
+
+    <script>
+        function handleGoogleCredential(response) {
+            const credential = response.credential;
+
+            document.getElementById("credential").value = credential;
+
+            const copyButton = document.getElementById("copyButton");
+            copyButton.disabled = false;
+
+            document.getElementById("status").textContent =
+                "Google ID Token obtenido correctamente.";
+        }
+
+        async function copyCredential() {
+            const credential = document.getElementById("credential").value;
+
+            if (!credential) {
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(credential);
+
+                document.getElementById("status").textContent =
+                    "Token copiado correctamente.";
+            } catch {
+                document.getElementById("credential").select();
+
+                document.getElementById("status").textContent =
+                    "Selecciona y copia el token manualmente.";
+            }
+        }
+    </script>
+</body>
+</html>

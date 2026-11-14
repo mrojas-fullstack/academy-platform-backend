@@ -1,16 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
 
 from .message import Message
 
-TMessage = TypeVar("TMessage", bound=Message)
-TResult = TypeVar("TResult")
 
-
-class Handler(
-    ABC,
-    Generic[TMessage, TResult],
-):
+class Handler[TMessage: Message, TResult](ABC):
     """
     Base interface for all message handlers.
     """
@@ -19,5 +12,4 @@ class Handler(
     async def handle(
         self,
         message: TMessage,
-    ) -> TResult:
-        ...
+    ) -> TResult: ...

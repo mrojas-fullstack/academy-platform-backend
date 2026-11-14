@@ -6,10 +6,11 @@ def build_messaging(
     container: Container,
 ) -> tuple[MessageRegistry, MessageBus]:
 
-    registry = MessageRegistry(container)
+    registry = MessageRegistry()
 
     bus = MessageBus(
-        registry=registry
+        registry=registry,
+        container=container,
     )
 
     return registry, bus

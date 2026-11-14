@@ -1,4 +1,5 @@
 from .activate_user import ActivateUserCommand
+from .google_login import GoogleLoginCommand
 from .link_identity import LinkIdentityCommand
 from .login import LoginCommand
 from .logout import LogoutCommand
@@ -16,4 +17,5 @@ __all__ = [
     "RegisterUserCommand",
     "SuspendUserCommand",
     "UpdateProfileCommand",
+    "GoogleLoginCommand",
 ]

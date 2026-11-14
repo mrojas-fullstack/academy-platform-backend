@@ -2,17 +2,14 @@ from __future__ import annotations
 
 import re
 
-from .base import ValueObject
+from app.core.domain.value_objects.value_object import ValueObject
+
 from ..exceptions import InvalidEmailException
 
-
-_EMAIL_REGEX = re.compile(
-    r"^[^@\s]+@[^@\s]+\.[^@\s]+$"
-)
+_EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 
 class Email(ValueObject):
-
     def __init__(
         self,
         value: str,

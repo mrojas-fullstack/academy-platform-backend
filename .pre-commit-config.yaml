@@ -1,0 +1,19 @@
+minimum_pre_commit_version: "4.0.0"
+
+repos:
+
+  - repo: local
+
+    hooks:
+
+      - id: academy-verify
+
+        name: Academy Verify
+
+        entry: task verify
+
+        language: system
+
+        pass_filenames: false
+
+        stages: [pre-commit]

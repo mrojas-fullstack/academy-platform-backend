@@ -5,7 +5,6 @@ from dataclasses import dataclass
 
 @dataclass(slots=True, frozen=True)
 class UpdateProfileCommand:
-
     user_id: str
 
     first_name: str

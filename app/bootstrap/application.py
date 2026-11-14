@@ -1,16 +1,25 @@
+from fastapi import FastAPI
+
+from app.core.database import configure_database
 from app.core.settings import get_settings
 
 from .container import build_container
 from .context import ApplicationContext
 from .messaging import build_messaging
-from .modules import register_modules
+from .module_installer import ModuleInstaller
 
 
 class ApplicationBootstrap:
-
-    def build(self) -> ApplicationContext:
+    def build(
+        self,
+        app: FastAPI,
+    ) -> ApplicationContext:
 
         settings = get_settings()
+
+        configure_database(
+            settings,
+        )
 
         container = build_container(
             settings,
@@ -20,8 +29,11 @@ class ApplicationBootstrap:
             container,
         )
 
-        register_modules(
+        installer = ModuleInstaller()
+
+        installer.install(
             package="app.modules",
+            app=app,
             container=container,
             registry=registry,
         )

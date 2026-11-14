@@ -5,7 +5,6 @@ from .reflection import Reflection
 
 
 class Scanner:
-
     def scan(
         self,
         package: str,
@@ -19,11 +18,9 @@ class Scanner:
             root.__path__,
             root.__name__ + ".",
         ):
-
             module = ModuleLoader.load(module_name)
 
             for cls in Reflection.get_classes(module):
-
                 if Reflection.is_handler(cls):
                     handlers.append(cls)
 

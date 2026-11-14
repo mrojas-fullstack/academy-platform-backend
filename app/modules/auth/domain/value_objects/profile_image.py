@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from urllib.parse import urlparse
 
-from .base import ValueObject
+from app.core.domain.value_objects.value_object import ValueObject
+
 from ..exceptions import InvalidProfileImageException
 
 
 class ProfileImage(ValueObject):
-
     def __init__(
         self,
         value: str,

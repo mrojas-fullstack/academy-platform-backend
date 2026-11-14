@@ -1,8 +1,8 @@
 from collections.abc import Callable
-from typing import Any, TypeAlias
+from typing import Any
 
-ServiceType: TypeAlias = type[Any]
+type ServiceType = type[Any]
 
-Factory: TypeAlias = Callable[[], Any]
+type Factory = Callable[[], Any]
 
-Provider: TypeAlias = ServiceType | Factory
+type Provider = ServiceType | Factory

@@ -6,7 +6,6 @@ from .unit_of_work import UnitOfWork
 
 
 class SQLAlchemyUnitOfWork(UnitOfWork):
-
     def __init__(
         self,
         session: AsyncSession,

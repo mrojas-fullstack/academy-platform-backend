@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from app.core.domain.entities import Entity
 from app.modules.auth.domain.value_objects import (
     Email,
     Locale,
@@ -9,18 +10,15 @@ from app.modules.auth.domain.value_objects import (
     UserProfileId,
 )
 
-from .entity import Entity
 
-
-class UserProfile(Entity):
-
+class UserProfile(Entity[UserProfileId]):
     def __init__(
         self,
         profile_id: UserProfileId,
         email: Email,
         first_name: PersonName,
         last_name: PersonName,
-        profile_image: ProfileImage,
+        profile_image: ProfileImage | None,
         locale: Locale,
         time_zone: TimeZone,
     ) -> None:
@@ -50,7 +48,7 @@ class UserProfile(Entity):
         return self._last_name
 
     @property
-    def profile_image(self) -> ProfileImage:
+    def profile_image(self) -> ProfileImage | None:
 
         return self._profile_image
 
@@ -82,7 +80,7 @@ class UserProfile(Entity):
 
     def change_profile_image(
         self,
-        profile_image: ProfileImage,
+        profile_image: ProfileImage | None,
     ) -> None:
 
         self._profile_image = profile_image

@@ -11,7 +11,6 @@ from app.modules.auth.domain.value_objects import (
 
 @dataclass(slots=True)
 class IdentityLinkedEvent(DomainEvent):
-
     user_id: UserId
 
     identity_id: IdentityId

@@ -3,5 +3,7 @@ from .message import Message
 
 class Command(Message):
     """
-    Marker class.
+    Marker class for commands.
     """
+
+    pass

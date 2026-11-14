@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
 
   db:
@@ -10,8 +8,8 @@ services:
     restart: always
 
     environment:
-      POSTGRES_USER: academy
-      POSTGRES_PASSWORD: academy
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: miguel123
       POSTGRES_DB: academy
 
     ports:

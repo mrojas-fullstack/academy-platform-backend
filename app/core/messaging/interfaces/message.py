@@ -1,11 +1,13 @@
 from dataclasses import dataclass, field
 from uuid import UUID, uuid4
-from abc import ABC
 
 
-@dataclass(slots=True)
-class Message(ABC):
-
+@dataclass(
+    slots=True,
+    frozen=True,
+    kw_only=True,
+)
+class Message:
     message_id: UUID = field(
-        default_factory=uuid4
+        default_factory=uuid4,
     )

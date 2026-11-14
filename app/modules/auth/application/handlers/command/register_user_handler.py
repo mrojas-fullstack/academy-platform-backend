@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from app.core.database import UnitOfWork
 from app.core.messaging.interfaces import CommandHandler
-
 from app.modules.auth.application.commands import RegisterUserCommand
-
+from app.modules.auth.domain.exceptions import (
+    EmailAlreadyExistsException,
+)
 from app.modules.auth.domain.factories import UserFactory
 from app.modules.auth.domain.repositories import UserRepository
-
 from app.modules.auth.domain.value_objects import (
     Email,
     Locale,
@@ -17,10 +17,6 @@ from app.modules.auth.domain.value_objects import (
     UserId,
 )
 
-from app.modules.auth.domain.exceptions import (
-    EmailAlreadyExistsException,
-)
-
 
 class RegisterUserHandler(
     CommandHandler[
@@ -28,7 +24,6 @@ class RegisterUserHandler(
         UserId,
     ],
 ):
-
     def __init__(
         self,
         user_repository: UserRepository,
@@ -46,8 +41,7 @@ class RegisterUserHandler(
         email = Email(command.email)
 
         if await self._user_repository.exists_by_email(email):
-
-            raise EmailAlreadyExistsException(email)
+            raise EmailAlreadyExistsException(email.value)
 
         first_name = PersonName(command.first_name)
 
@@ -57,11 +51,7 @@ class RegisterUserHandler(
 
         time_zone = TimeZone(command.time_zone)
 
-        profile_image = (
-            ProfileImage(command.profile_image)
-            if command.profile_image
-            else None
-        )
+        profile_image = ProfileImage(command.profile_image) if command.profile_image else None
 
         user = UserFactory.register(
             email=email,

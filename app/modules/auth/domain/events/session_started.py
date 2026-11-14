@@ -11,7 +11,6 @@ from app.modules.auth.domain.value_objects import (
 
 @dataclass(slots=True)
 class SessionStartedEvent(DomainEvent):
-
     user_id: UserId
 
     session_id: SessionId

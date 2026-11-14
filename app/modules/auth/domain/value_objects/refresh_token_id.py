@@ -1,4 +1,4 @@
-from .entity_id import EntityId
+from app.core.domain.value_objects.entity_id import EntityId
 
 
 class RefreshTokenId(EntityId):

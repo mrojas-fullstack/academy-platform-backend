@@ -9,11 +9,11 @@ from app.modules.auth.domain.value_objects import (
     ProfileImage,
     TimeZone,
     UserId,
+    UserProfileId,
 )
 
 
 class UserFactory:
-
     @staticmethod
     def register(
         email: Email,
@@ -24,7 +24,10 @@ class UserFactory:
         profile_image: ProfileImage | None = None,
     ) -> User:
 
+        user_id = UserId.new()
+
         profile = UserProfile(
+            profile_id=UserProfileId(user_id.value),
             email=email,
             first_name=first_name,
             last_name=last_name,
@@ -34,7 +37,7 @@ class UserFactory:
         )
 
         return User(
-            user_id=UserId.new(),
+            user_id=user_id,
             status=UserStatus.ACTIVE,
             profile=profile,
         )

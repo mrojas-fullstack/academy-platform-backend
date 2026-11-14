@@ -1,14 +1,13 @@
 from functools import lru_cache
 
 from .app import AppSettings
-from .database import DatabaseSettings
 from .auth import AuthSettings
+from .database import DatabaseSettings
 from .google import GoogleSettings
 from .logging import LoggingSettings
 
 
 class Settings:
-
     app: AppSettings
     database: DatabaseSettings
     auth: AuthSettings

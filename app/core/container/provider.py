@@ -11,7 +11,6 @@ if TYPE_CHECKING:
 
 
 class ServiceProvider:
-
     def __init__(
         self,
         container: Container,
@@ -44,12 +43,11 @@ class ServiceProvider:
         cls: type,
     ) -> Any:
 
-        signature = inspect.signature(cls.__init__)
+        signature = inspect.signature(cls)
 
         kwargs: dict[str, Any] = {}
 
-        for parameter in list(signature.parameters.values())[1:]:
-
+        for parameter in signature.parameters.values():
             annotation = parameter.annotation
 
             if annotation is inspect.Signature.empty:

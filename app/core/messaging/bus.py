@@ -6,7 +6,6 @@ from .registry import MessageRegistry
 
 
 class MessageBus:
-
     def __init__(
         self,
         registry: MessageRegistry,
@@ -56,7 +55,6 @@ class MessageBus:
         )
 
         for handler_type in handler_types:
-
             handler = self._container.resolve(
                 handler_type,
             )

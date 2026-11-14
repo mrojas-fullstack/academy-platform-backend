@@ -1,0 +1,90 @@
+
+# ==============================
+# PYTHON
+# ==============================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# ==============================
+# VIRTUAL ENVIRONMENTS
+# ==============================
+.venv/
+venv/
+env/
+ENV/
+
+# ==============================
+# BUILD / DISTRIBUTION
+# ==============================
+build/
+dist/
+wheels/
+*.egg-info/
+.eggs/
+
+# ==============================
+# TYPE CHECKING / LINTING
+# ==============================
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+.ruff_cache/
+
+# ==============================
+# TESTING / COVERAGE
+# ==============================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+nosetests.xml
+
+# ==============================
+# ENVIRONMENT VARIABLES / SECRETS
+# ==============================
+.env
+.env.*
+!.env.example
+
+# ==============================
+# IDE / EDITORS
+# ==============================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ==============================
+# OPERATING SYSTEM
+# ==============================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ==============================
+# LOGS
+# ==============================
+*.log
+logs/
+
+# ==============================
+# TEMPORARY FILES
+# ==============================
+*.tmp
+*.bak
+*.orig
+
+# ==============================
+# LOCAL DATABASES
+# ==============================
+*.sqlite
+*.sqlite3
+*.db

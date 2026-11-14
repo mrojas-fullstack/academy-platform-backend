@@ -16,17 +16,14 @@ class Reflection:
         """
 
         for current in cls.__mro__:
-
             for base in getattr(
                 current,
                 "__orig_bases__",
                 (),
             ):
-
                 origin = get_origin(base)
 
                 if origin is generic_type:
-
                     return (
                         origin,
                         get_args(base),

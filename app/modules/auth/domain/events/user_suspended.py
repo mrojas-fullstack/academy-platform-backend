@@ -5,7 +5,6 @@ from app.modules.auth.domain.value_objects import UserId
 
 
 class UserSuspendedEvent(DomainEvent):
-
     def __init__(
         self,
         user_id: UserId,

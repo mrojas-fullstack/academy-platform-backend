@@ -4,8 +4,8 @@ from .session_repository import SessionRepository
 from .user_repository import UserRepository
 
 __all__ = [
-    "IdentityRepository",
-    "RefreshTokenRepository",
-    "SessionRepository",
     "UserRepository",
+    "IdentityRepository",
+    "SessionRepository",
+    "RefreshTokenRepository",
 ]

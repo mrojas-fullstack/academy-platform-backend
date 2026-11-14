@@ -8,7 +8,6 @@ from app.modules.auth.domain.value_objects import (
 
 
 class RefreshTokenRotatedEvent(DomainEvent):
-
     def __init__(
         self,
         refresh_token_id: RefreshTokenId,

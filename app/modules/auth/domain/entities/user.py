@@ -1,24 +1,25 @@
 from __future__ import annotations
 
+from app.core.domain.entities.aggregate_root import AggregateRoot
 from app.modules.auth.domain.enums import UserStatus
-from app.modules.auth.domain.value_objects import SessionId
 from app.modules.auth.domain.value_objects import (
     Email,
     Locale,
     PersonName,
     ProfileImage,
+    SessionId,
     TimeZone,
     UserId,
 )
 
-from .aggregate_root import AggregateRoot
 from .identity import Identity
 from .session import Session
 from .user_profile import UserProfile
 
 
-class User(AggregateRoot):
-
+class User(
+    AggregateRoot[UserId],
+):
     def __init__(
         self,
         user_id: UserId,
@@ -28,7 +29,9 @@ class User(AggregateRoot):
         sessions: list[Session] | None = None,
     ) -> None:
 
-        super().__init__(user_id)
+        super().__init__(
+            user_id,
+        )
 
         self._status = status
         self._profile = profile
@@ -36,30 +39,46 @@ class User(AggregateRoot):
         self._sessions = sessions or []
 
     @property
-    def status(self) -> UserStatus:
+    def status(
+        self,
+    ) -> UserStatus:
 
         return self._status
 
     @property
-    def profile(self) -> UserProfile:
+    def profile(
+        self,
+    ) -> UserProfile:
 
         return self._profile
 
     @property
-    def identities(self) -> tuple[Identity, ...]:
+    def identities(
+        self,
+    ) -> tuple[Identity, ...]:
 
-        return tuple(self._identities)
+        return tuple(
+            self._identities,
+        )
 
     @property
-    def sessions(self) -> tuple[Session, ...]:
+    def sessions(
+        self,
+    ) -> tuple[Session, ...]:
 
-        return tuple(self._sessions)
+        return tuple(
+            self._sessions,
+        )
 
-    def activate(self) -> None:
+    def activate(
+        self,
+    ) -> None:
 
         self._status = UserStatus.ACTIVE
 
-    def suspend(self) -> None:
+    def suspend(
+        self,
+    ) -> None:
 
         self._status = UserStatus.SUSPENDED
 
@@ -68,7 +87,9 @@ class User(AggregateRoot):
         email: Email,
     ) -> None:
 
-        self._profile.change_email(email)
+        self._profile.change_email(
+            email,
+        )
 
     def change_name(
         self,
@@ -83,7 +104,7 @@ class User(AggregateRoot):
 
     def change_profile_image(
         self,
-        profile_image: ProfileImage,
+        profile_image: ProfileImage | None,
     ) -> None:
 
         self._profile.change_profile_image(
@@ -95,7 +116,9 @@ class User(AggregateRoot):
         locale: Locale,
     ) -> None:
 
-        self._profile.change_locale(locale)
+        self._profile.change_locale(
+            locale,
+        )
 
     def change_time_zone(
         self,
@@ -115,14 +138,18 @@ class User(AggregateRoot):
             if existing.provider == identity.provider:
                 return
 
-        self._identities.append(identity)
+        self._identities.append(
+            identity,
+        )
 
     def start_session(
         self,
         session: Session,
     ) -> None:
 
-        self._sessions.append(session)
+        self._sessions.append(
+            session,
+        )
 
     def revoke_session(
         self,
@@ -130,9 +157,7 @@ class User(AggregateRoot):
     ) -> None:
 
         for session in self._sessions:
-
             if session.id == session_id:
-
                 session.revoke()
 
                 return

@@ -2,17 +2,15 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
+from app.core.domain.entities.entity import Entity
 from app.modules.auth.domain.enums import SessionStatus
 from app.modules.auth.domain.value_objects import (
     SessionId,
     UserId,
 )
 
-from .entity import Entity
 
-
-class Session(Entity):
-
+class Session(Entity[SessionId]):
     def __init__(
         self,
         session_id: SessionId,
@@ -59,10 +57,7 @@ class Session(Entity):
     @property
     def is_active(self) -> bool:
 
-        return (
-            self._status is SessionStatus.ACTIVE
-            and self._expires_at > datetime.now(UTC)
-        )
+        return self._status is SessionStatus.ACTIVE and self._expires_at > datetime.now(UTC)
 
     def touch(
         self,

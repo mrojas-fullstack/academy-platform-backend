@@ -1,11 +1,11 @@
-from .command_handler import CommandHandler
 from .command import Command
-from .event_handler import EventHandler
+from .command_handler import CommandHandler
 from .event import Event
+from .event_handler import EventHandler
 from .handler import Handler
 from .message import Message
-from .query_handler import QueryHandler
 from .query import Query
+from .query_handler import QueryHandler
 
 __all__ = [
     "CommandHandler",

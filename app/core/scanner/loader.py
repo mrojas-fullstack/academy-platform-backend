@@ -5,7 +5,6 @@ from .exceptions import PackageNotFoundError
 
 
 class ModuleLoader:
-
     @staticmethod
     def load(
         module_name: str,

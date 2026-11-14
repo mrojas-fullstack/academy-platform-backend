@@ -4,7 +4,6 @@ from .domain_event import DomainEvent
 
 
 class DomainEventDispatcher:
-
     def __init__(
         self,
         bus: MessageBus,

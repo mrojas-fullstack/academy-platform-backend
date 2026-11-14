@@ -8,7 +8,6 @@ from app.modules.auth.domain.value_objects import (
 
 
 class SessionRevokedEvent(DomainEvent):
-
     def __init__(
         self,
         user_id: UserId,

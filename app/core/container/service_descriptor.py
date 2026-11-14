@@ -6,7 +6,6 @@ from .types import Provider, ServiceType
 
 @dataclass(slots=True)
 class ServiceDescriptor:
-
     service_type: ServiceType
 
     provider: Provider

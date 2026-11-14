@@ -1,0 +1,62 @@
+version: "3"
+
+tasks:
+
+  install:
+    desc: Install project dependencies
+    cmds:
+      - uv sync
+
+  format:
+    desc: Format project
+    cmds:
+      - uv run ruff format app tests
+
+  lint:
+    desc: Run Ruff and fix automatically
+    cmds:
+      - uv run ruff check app tests --fix
+
+  typecheck:
+    desc: Run MyPy
+    cmds:
+      - uv run mypy app
+
+  compile:
+    desc: Compile Python files
+    cmds:
+      - uv run python -m compileall app
+
+  test:
+    desc: Run tests
+    cmds:
+      - uv run pytest
+
+  verify:
+    desc: Run developer quality gates
+    cmds:
+      - task: lint
+      - task: format
+      - task: typecheck
+
+  verify-full:
+    desc: Run CI quality gates
+    cmds:
+      - task: verify
+      - task: compile
+      - task: test
+
+  run:
+    desc: Run FastAPI application
+    cmds:
+      - uv run uvicorn app.main:app --reload
+
+  migrate:
+    desc: Apply database migrations
+    cmds:
+      - uv run alembic upgrade head
+
+  migration:
+    desc: Create Alembic migration
+    cmds:
+      - uv run alembic revision --autogenerate -m "{{.CLI_ARGS}}"

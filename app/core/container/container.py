@@ -12,7 +12,6 @@ from .types import Provider
 
 
 class Container:
-
     def __init__(self) -> None:
 
         self._services: dict[type, ServiceDescriptor] = {}
@@ -76,9 +75,7 @@ class Container:
         descriptor = self._services.get(interface)
 
         if descriptor is None:
-            raise DependencyNotRegisteredError(
-                f"{interface.__name__} has not been registered."
-            )
+            raise DependencyNotRegisteredError(f"{interface.__name__} has not been registered.")
 
         return self._provider.provide(descriptor)
 

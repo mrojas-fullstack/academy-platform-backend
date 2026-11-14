@@ -2,7 +2,6 @@ from enum import Enum, auto
 
 
 class ServiceLifetime(Enum):
-
     SINGLETON = auto()
 
     TRANSIENT = auto()

@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from .base import ValueObject
+from app.core.domain.value_objects.value_object import ValueObject
+
 from ..exceptions import InvalidPersonNameException
 
 
 class PersonName(ValueObject):
-
     MAX_LENGTH = 100
 
     def __init__(

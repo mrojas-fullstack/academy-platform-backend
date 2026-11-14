@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from app.core.domain.entities.entity import Entity
 from app.modules.auth.domain.enums import IdentityProvider
 from app.modules.auth.domain.value_objects import (
     Email,
@@ -8,11 +9,8 @@ from app.modules.auth.domain.value_objects import (
     UserId,
 )
 
-from .entity import Entity
 
-
-class Identity(Entity):
-
+class Identity(Entity[IdentityId]):
     def __init__(
         self,
         identity_id: IdentityId,

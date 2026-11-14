@@ -3,14 +3,14 @@ from app.core.messaging.exceptions import (
     InvalidHandlerError,
     MessageAlreadyRegisteredError,
 )
+from app.core.scanner.reflection import Reflection
+
 from .interfaces.command_handler import CommandHandler
 from .interfaces.event_handler import EventHandler
 from .interfaces.query_handler import QueryHandler
-from .reflection import Reflection
 
 
 class MessageRegistry:
-
     def __init__(self) -> None:
 
         self._commands: dict[type, type] = {}
@@ -24,38 +24,42 @@ class MessageRegistry:
         handler: type,
     ) -> None:
 
-        if Reflection.inherits_from(handler, CommandHandler):
-
+        if Reflection.inherits_from(
+            handler,
+            CommandHandler,
+        ):
             message = Reflection.get_message_type(
                 handler,
                 CommandHandler,
             )
 
             if message in self._commands:
-                raise MessageAlreadyRegisteredError(
-                    f"{message.__name__} already registered."
-                )
+                raise MessageAlreadyRegisteredError(f"{message.__name__} already registered.")
 
             self._commands[message] = handler
+
             return
 
-        if Reflection.inherits_from(handler, QueryHandler):
-
+        if Reflection.inherits_from(
+            handler,
+            QueryHandler,
+        ):
             message = Reflection.get_message_type(
                 handler,
                 QueryHandler,
             )
 
             if message in self._queries:
-                raise MessageAlreadyRegisteredError(
-                    f"{message.__name__} already registered."
-                )
+                raise MessageAlreadyRegisteredError(f"{message.__name__} already registered.")
 
             self._queries[message] = handler
+
             return
 
-        if Reflection.inherits_from(handler, EventHandler):
-
+        if Reflection.inherits_from(
+            handler,
+            EventHandler,
+        ):
             message = Reflection.get_message_type(
                 handler,
                 EventHandler,
@@ -68,9 +72,7 @@ class MessageRegistry:
 
             return
 
-        raise InvalidHandlerError(
-            f"{handler.__name__} is not a valid handler."
-        )
+        raise InvalidHandlerError(f"{handler.__name__} is not a valid handler.")
 
     def get_command_handler(
         self,
@@ -80,9 +82,7 @@ class MessageRegistry:
         handler = self._commands.get(message)
 
         if handler is None:
-            raise HandlerNotFoundError(
-                f"No handler registered for {message.__name__}."
-            )
+            raise HandlerNotFoundError(f"No handler registered for {message.__name__}.")
 
         return handler
 
@@ -94,9 +94,7 @@ class MessageRegistry:
         handler = self._queries.get(message)
 
         if handler is None:
-            raise HandlerNotFoundError(
-                f"No handler registered for {message.__name__}."
-            )
+            raise HandlerNotFoundError(f"No handler registered for {message.__name__}.")
 
         return handler
 
