@@ -20,6 +20,7 @@ from app.modules.auth.application.handlers.command import (
     RegisterUserHandler,
 )
 from app.modules.auth.domain.entities import Session
+from app.modules.auth.domain.exceptions.user_not_found import UserNotFoundException
 from app.modules.auth.infrastructure.database.repositories import (
     SQLAlchemyUserRepository,
 )
@@ -40,6 +41,7 @@ from app.modules.auth.presentation.requests.register_request import (
 from app.modules.auth.presentation.responses.google_login_response import (
     GoogleLoginResponse,
 )
+from app.modules.auth.presentation.responses.me_response import MeResponse
 from app.modules.auth.presentation.responses.refresh_token_response import (
     RefreshTokenResponse,
 )
@@ -193,3 +195,38 @@ async def logout(
     )
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.get(
+    "/me",
+    response_model=MeResponse,
+    status_code=status.HTTP_200_OK,
+)
+async def get_me(
+    current_session: Annotated[
+        Session,
+        Depends(get_current_session),
+    ],
+    dependencies: Annotated[
+        AuthDependencies,
+        Depends(get_auth_dependencies),
+    ],
+) -> MeResponse:
+    user = await dependencies.user_repository.get_by_id(
+        current_session.user_id,
+    )
+
+    if user is None:
+        raise UserNotFoundException(str(current_session.user_id))
+
+    profile = user.profile
+
+    return MeResponse(
+        id=str(user.id.value),
+        email=profile.email.value,
+        first_name=profile.first_name.value,
+        last_name=profile.last_name.value,
+        profile_image=(profile.profile_image.value if profile.profile_image is not None else None),
+        locale=profile.locale.value,
+        time_zone=profile.time_zone.value,
+    )
