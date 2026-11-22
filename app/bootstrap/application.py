@@ -14,16 +14,11 @@ class ApplicationBootstrap:
         self,
         app: FastAPI,
     ) -> ApplicationContext:
-
         settings = get_settings()
 
-        configure_database(
-            settings,
-        )
+        configure_database(settings)
 
-        container = build_container(
-            settings,
-        )
+        container = build_container(settings)
 
         registry, bus = build_messaging(
             container,

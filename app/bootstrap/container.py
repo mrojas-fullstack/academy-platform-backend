@@ -1,24 +1,13 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.container import Container
-from app.core.database import (
-    SQLAlchemyUnitOfWork,
-    UnitOfWork,
-)
-from app.core.database.session import (
-    configure_database,
-    get_session_factory,
-)
 from app.core.logging import logger
+from app.core.security import PasswordHasher
 from app.core.settings import Settings
+from app.modules.auth.infrastructure.security import Argon2PasswordHasher
 
 
 def build_container(
     settings: Settings,
 ) -> Container:
-
-    configure_database(settings)
-
     container = Container()
 
     container.register_instance(
@@ -31,16 +20,9 @@ def build_container(
         logger,
     )
 
-    container.register_factory(
-        AsyncSession,
-        lambda: get_session_factory(),
-    )
-
-    container.register_factory(
-        UnitOfWork,
-        lambda: SQLAlchemyUnitOfWork(
-            container.resolve(AsyncSession),
-        ),
+    container.register_instance(
+        PasswordHasher,
+        Argon2PasswordHasher(),
     )
 
     return container

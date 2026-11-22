@@ -6,6 +6,7 @@ from .identity_not_found import IdentityNotFoundException
 from .invalid_email import InvalidEmailException
 from .invalid_google_credential import InvalidGoogleCredentialException
 from .invalid_locale import InvalidLocaleException
+from .invalid_login_identifier import InvalidLoginIdentifierException
 from .invalid_person_name import InvalidPersonNameException
 from .invalid_profile_image import InvalidProfileImageException
 from .invalid_provider_user_id import InvalidProviderUserIdException
@@ -25,4 +26,5 @@ __all__ = [
     "IdentityNotFoundException",
     "InvalidGoogleCredentialException",
     "InvalidRefreshTokenException",
+    "InvalidLoginIdentifierException",
 ]

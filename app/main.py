@@ -1,6 +1,10 @@
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
 from app.bootstrap import ApplicationBootstrap
+from app.core.database import get_engine
 from app.core.exceptions import (
     ConflictException,
     DomainException,
@@ -14,7 +18,20 @@ from app.core.exceptions.http import (
     validation_exception_handler,
 )
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(
+    app: FastAPI,
+) -> AsyncIterator[None]:
+    try:
+        yield
+    finally:
+        await get_engine().dispose()
+
+
+app = FastAPI(
+    lifespan=lifespan,
+)
 
 app.add_exception_handler(
     ValidationException,

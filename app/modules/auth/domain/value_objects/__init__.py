@@ -1,6 +1,9 @@
 from .email import Email
 from .identity_id import IdentityId
 from .locale import Locale
+from .login_identifier import LoginIdentifier
+from .login_identifier_type import LoginIdentifierType
+from .password_hash import PasswordHash
 from .person_name import PersonName
 from .profile_image import ProfileImage
 from .provider_user_id import ProviderUserId
@@ -19,6 +22,9 @@ __all__ = [
     "RefreshTokenId",
     "ProviderUserId",
     "Email",
+    "LoginIdentifier",
+    "LoginIdentifierType",
+    "PasswordHash",
     "PersonName",
     "ProfileImage",
     "Locale",
