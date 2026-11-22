@@ -30,7 +30,7 @@ class UserMapper:
 
         model.profile = UserProfileModel(
             user_id=user.id.value,
-            email=user.profile.email.value,
+            email=(user.profile.email.value if user.profile.email is not None else None),
             first_name=user.profile.first_name.value,
             last_name=user.profile.last_name.value,
             profile_image=(
@@ -52,7 +52,7 @@ class UserMapper:
 
         profile = UserProfile(
             profile_id=UserProfileId(model.id),
-            email=Email(model.profile.email),
+            email=(Email(model.profile.email) if model.profile.email is not None else None),
             first_name=PersonName(model.profile.first_name),
             last_name=PersonName(model.profile.last_name),
             profile_image=(

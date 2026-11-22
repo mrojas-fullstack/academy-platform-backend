@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class MeResponse(BaseModel):
     id: str
-    email: str
+    email: str | None
     first_name: str
     last_name: str
     profile_image: str | None

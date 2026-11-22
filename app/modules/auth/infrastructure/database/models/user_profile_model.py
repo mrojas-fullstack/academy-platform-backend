@@ -23,11 +23,11 @@ class UserProfileModel(Base):
         primary_key=True,
     )
 
-    email: Mapped[str] = mapped_column(
+    email: Mapped[str | None] = mapped_column(
         String(320),
         unique=True,
         index=True,
-        nullable=False,
+        nullable=True,
     )
 
     first_name: Mapped[str] = mapped_column(

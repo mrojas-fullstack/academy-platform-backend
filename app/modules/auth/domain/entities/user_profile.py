@@ -15,7 +15,7 @@ class UserProfile(Entity[UserProfileId]):
     def __init__(
         self,
         profile_id: UserProfileId,
-        email: Email,
+        email: Email | None,
         first_name: PersonName,
         last_name: PersonName,
         profile_image: ProfileImage | None,
@@ -33,8 +33,7 @@ class UserProfile(Entity[UserProfileId]):
         self._time_zone = time_zone
 
     @property
-    def email(self) -> Email:
-
+    def email(self) -> Email | None:
         return self._email
 
     @property
@@ -64,7 +63,7 @@ class UserProfile(Entity[UserProfileId]):
 
     def change_email(
         self,
-        email: Email,
+        email: Email | None,
     ) -> None:
 
         self._email = email

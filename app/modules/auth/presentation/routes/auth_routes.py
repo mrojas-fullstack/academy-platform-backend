@@ -223,7 +223,7 @@ async def get_me(
 
     return MeResponse(
         id=str(user.id.value),
-        email=profile.email.value,
+        email=(profile.email.value if profile.email is not None else None),
         first_name=profile.first_name.value,
         last_name=profile.last_name.value,
         profile_image=(profile.profile_image.value if profile.profile_image is not None else None),
